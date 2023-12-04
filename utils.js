@@ -1,5 +1,4 @@
-// utils.js
-const apiKey = "koDgoe9bc4Ffgvh8rgzWWQ==PC7lyNMTmcFAFoVa";
+const apiKey = process.env.API_KEY;
 const { DateTime } = require("luxon");
 const axios = require("axios");
 
@@ -95,6 +94,5 @@ module.exports = {
   getRandomUser,
   getCityTimeZoneByName,
   getCurrentTimeInTimeZone,
-  getIngredients,
   fetchCocktail,
 };
