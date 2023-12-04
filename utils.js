@@ -130,16 +130,13 @@ function getCurrentTimeInTimeZone(timeZone) {
   }
 }
 
-/ Helper function to extract ingredients from the cocktail data
 function getIngredients(cocktailData) {
   const ingredients = [];
 
-  // Loop through the ingredients in the response
   for (let i = 1; i <= 15; i++) {
     const ingredient = cocktailData[`strIngredient${i}`];
     const measure = cocktailData[`strMeasure${i}`];
 
-    // Check if both ingredient and measure are present
     if (ingredient && measure) {
       ingredients.push(`${measure.trim()} ${ingredient.trim()}`);
     } else if (ingredient) {
@@ -158,5 +155,5 @@ module.exports = {
   getRandomUser,
   getCityTimeZoneByName,
   getCurrentTimeInTimeZone,
-  getIngredients
+  getIngredients,
 };

@@ -13,10 +13,10 @@ const {
   getIngredients,
 } = require("./utils");
 
-app.get("/beer", (req, res) => {
-  const randomBeer = generateRandomBeer();
-  res.json(randomBeer);
-});
+// app.get("/beer", (req, res) => {
+//   const randomBeer = generateRandomBeer();
+//   res.json(randomBeer);
+// });
 
 // app.get("/cocktail", async (req, res) => {
 //   // const randomCocktail = generateRandomCocktail();
@@ -25,14 +25,33 @@ app.get("/beer", (req, res) => {
 //   );
 //   res.json(randomCocktail.data);
 // });
+
+app.get("/beer", async (req, res) => {
+  try {
+    const response = await axios.get("https://api.punkapi.com/v2/beers/random");
+
+    const beerData = response.data[0];
+    const beerInfo = {
+      name: beerData.name,
+      tagline: beerData.tagline,
+      ABV: beerData.abv,
+      IBU: beerData.ibu,
+      foodPairing: beerData.food_pairing,
+    };
+
+    res.json(beerInfo);
+  } catch (error) {
+    console.error("Error fetching random beer:", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.get("/cocktail", async (req, res) => {
   try {
-    // Make a request to TheCocktailDB API to get a random cocktail
     const response = await axios.get(
       "https://www.thecocktaildb.com/api/json/v1/1/random.php"
     );
 
-    // Extract relevant information from the response
     const cocktailData = response.data.drinks[0];
     const cocktailInfo = {
       name: cocktailData.strDrink,
