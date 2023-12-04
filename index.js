@@ -55,7 +55,7 @@ app.get("/suggestion", async (req, res) => {
     const formattedTime = currentTime.toFormat("HH:mm");
     console.log(
       "\x1b[34m%s\x1b[0m",
-      ` 🎲 Suggested 🎲 || Full name: ${user.fullName[0]}, City: ${user.city}, Country: ${user.country}, Local time: ${formattedTime} `
+      ` 🎲 Suggested 🎲 || Name: ${user.fullName}, City: ${user.city}, Country: ${user.country}, Local time: ${formattedTime} `
     );
 
     const firstLetter = user.fullName[0][0];
@@ -70,7 +70,10 @@ app.get("/suggestion", async (req, res) => {
       data = await fetchCocktail(
         `${COCKTAIL_API_URL}/search.php?f=${firstLetter}`
       );
-      console.log("\x1b[31m%s\x1b[0m", `Got a random cocktail: ${data.name} 🍸`);
+      console.log(
+        "\x1b[31m%s\x1b[0m",
+        `Got a random cocktail: ${data.name} 🍸`
+      );
     }
 
     res.json(data);
