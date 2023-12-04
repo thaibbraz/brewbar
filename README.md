@@ -38,11 +38,17 @@ Before running the service, ensure you have the following installed:
    npm install
    ```
 
-3. Create a `.env` file in the root directory and provide the required environment variables, including the API keys:
+3. Enviroment variables
+    1. **Generate API Key:**
+      - Visit the [API Ninjas website](https://api-ninjas.com/api).
+      - Create an account if you don't have one.
+      - After creating an account, navigate to [your profile](https://api-ninjas.com/profile).
+      - Find your API key, which will be available on this page.
 
-   ```env
-   API_KEY=your-api-key
-   ```
+    2. **Create `.env` File:**
+      - In the root directory of your project, create a file named `.env`.
+      - Inside the `.env` file, add the API key in the format: `API_KEY=your_api_key_here`.
+
 
 4. Start the service:
 

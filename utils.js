@@ -2,6 +2,9 @@ const apiKey = process.env.API_KEY;
 const { DateTime } = require("luxon");
 const axios = require("axios");
 
+const USER_API_URL = "https://randomuser.me/api/";
+const TIMEZONE_API_URL = "https://api.api-ninjas.com/v1/timezone";
+
 function isDaytime(time) {
   const hours = parseInt(time.split(":")[0]);
   const daytimeStart = 6;
@@ -11,15 +14,16 @@ function isDaytime(time) {
 
 async function getRandomUser() {
   try {
-    const response = await axios.get("https://randomuser.me/api/");
+    const response = await axios.get(USER_API_URL);
     const userData = response.data.results[0];
     const fullName = `${userData.name.first} ${userData.name.last}`;
     const city = userData.location.city;
     const country = userData.location.country;
-    console.log(`Full name: ${fullName}, City: ${city}, Country: ${country}`);
+
     return {
       fullName: fullName,
       city: city,
+      country: country,
     };
   } catch (error) {
     throw new Error(`Error fetching random user: ${error.message}`);
@@ -28,14 +32,11 @@ async function getRandomUser() {
 
 async function getCityTimeZoneByName(city) {
   try {
-    const response = await axios.get(
-      `https://api.api-ninjas.com/v1/timezone?city=${city}`,
-      {
-        headers: {
-          "X-Api-Key": apiKey,
-        },
-      }
-    );
+    const response = await axios.get(`${TIMEZONE_API_URL}?city=${city}`, {
+      headers: {
+        "X-Api-Key": apiKey,
+      },
+    });
     return response;
   } catch (error) {
     console.error("Error getting city time:", error.message);
@@ -70,6 +71,25 @@ function getIngredients(cocktailData) {
   return ingredients;
 }
 
+async function fetchBeer(apiUrl) {
+  try {
+    const response = await axios.get(apiUrl);
+    const beerData = response.data[0];
+    const beerInfo = {
+      name: beerData.name,
+      tagline: beerData.tagline,
+      ABV: beerData.abv,
+      IBU: beerData.ibu,
+      foodPairing: beerData.food_pairing,
+    };
+
+    return beerInfo;
+  } catch (error) {
+    console.error("Error fetching random beer:", error.message);
+    throw new Error("Internal server error");
+  }
+}
+
 async function fetchCocktail(apiUrl) {
   try {
     const response = await axios.get(apiUrl);
@@ -94,5 +114,6 @@ module.exports = {
   getRandomUser,
   getCityTimeZoneByName,
   getCurrentTimeInTimeZone,
+  fetchBeer,
   fetchCocktail,
 };
